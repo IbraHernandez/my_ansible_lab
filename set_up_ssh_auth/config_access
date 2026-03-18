@@ -1,0 +1,14 @@
+So we could conclude that to configure access to my managed nodes, I need to generate an SSH key:
+
+ssh-keygen
+
+then copy that key to my managed hosts;
+
+ssh-copy-id -i /home/user/.ssh/id_rsa.pub user@hostnameOrIP 
+
+once connected, verify that with that user I can become root without a password so that become works
+
+sudo -i or add a file in /etc/sudoers.d/user with 'user ALL=(ALL) NOPASSWD:ALL'
+
+remember that details about how to configure sudoers files can be found in 'man sudoers' and search for 'wheel' keyword.
+

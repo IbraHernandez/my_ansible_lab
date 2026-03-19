@@ -1,0 +1,13 @@
+---
+- name: check access
+  hosts: all
+  become: true
+  tasks:
+    - name: whoami as root
+      command: whoami
+      become: true
+      register: whoami_output
+
+    - name: print whoami output
+      debug:
+        var: whoami_output

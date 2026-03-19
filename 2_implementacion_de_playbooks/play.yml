@@ -1,0 +1,13 @@
+---
+- name: fist play
+  hosts: pro
+  become: true
+  tasks:
+    - name: Add repos
+      ansible.builtin.yum_repository:
+        name: epel
+        description: my repo
+        baseurl: https://download.fedoraproject.org/pub/epel/9/Everything/x86_64/
+        enabled: true
+        gpgcheck: true
+        gpgkey: https://download.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-9  

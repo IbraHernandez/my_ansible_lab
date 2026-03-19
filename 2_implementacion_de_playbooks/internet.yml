@@ -1,0 +1,61 @@
+---
+- name: Enable internet services
+  hosts: dev
+  become: true
+  tasks:
+    - name: install most recent version of packages
+      dnf:
+        name:
+          - firewalld
+          - httpd
+          - mariadb-server
+          - php
+          - php-mysqlnd
+        state: latest
+    
+    - name: Make sure a service unit is running
+      ansible.builtin.service:
+        name: firewalld
+        state: started  
+        enabled: yes  
+
+    - name: Enable firewalld
+      ansible.posix.firewalld:
+        service: http
+        state: enabled
+        immediate: true
+        permanent: true
+
+    - name: enable httpd
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: enable mariadb
+      service:
+        name: mariadb
+        state: started
+        enabled: yes
+
+    - name: copy stuff
+      copy:
+        src: /home/student/2_implementacion_de_playbooks/my_doc_2_copy/index.php
+        dest: /var/www/html/index.php
+        mode: '0644'
+
+- name: test server connection
+  hosts: localhost
+  connection: local
+  become: false
+  tasks:
+    - name: validate server connection
+      uri:
+        url: http://192.168.18.97
+        method: GET
+        status_code: 200
+        return_content: true
+        validate_certs: false  
+            
+
+
